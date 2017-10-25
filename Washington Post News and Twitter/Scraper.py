@@ -1,4 +1,5 @@
 import requests
+import csv
 from bs4 import BeautifulSoup
 
 #Get the page and make a beautiful soup object
@@ -9,7 +10,14 @@ soup = BeautifulSoup(page.text, 'html.parser')
 IntheNewClass = soup.find(class_= 'in-the-news-wrapper')
 IntheNewClass = IntheNewClass.find_all('a')
 
-#Prints just the news keywords
+#Creating file too read into
+Topics = open('Topics.txt', 'w')
+
+#Writes the topics into a file each on a new line
+List = []
 for NewsName in IntheNewClass:
     names = NewsName.contents[0]
-    print(names)
+    List.append(names)
+for names in List:
+    Topics.write("%s\n" % names)
+Topics.close()
