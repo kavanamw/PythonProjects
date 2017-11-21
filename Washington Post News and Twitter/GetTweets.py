@@ -1,3 +1,5 @@
+#Coded and complied on a Windows machine, the encoding in the file for Tweets.txt is related to windows and needs to be edited for other systems
+#like Linux
 import tweepy
 import time
 #Token and key setup, moving to a file would be more secure
