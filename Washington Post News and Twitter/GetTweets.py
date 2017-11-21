@@ -1,7 +1,7 @@
-#Coded and complied on a Windows machine, the encoding in the file for Tweets.txt is related to windows and needs to be edited for other systems
-#like Linux
 import tweepy
 import time
+import os
+import errno
 #Token and key setup, moving to a file would be more secure
 access_token = "2496354104-uPCkkSWZMKGoxSUQHAIQQL60TdJxuRiVCQdkERw"
 access_secret = "GItWzmaoI9deOVYlIT7iwcjhwVNYlx4zCjptmEQZwYoRN"
@@ -34,16 +34,35 @@ Htopics = open('HashTopics.txt', 'w')
 for x in range(len(HashList)):
     Htopics.write(HashList[x])
     Htopics.write('\n')
+
+def CreateFile():
+    filename = "C:\\Users\\Matt\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics"
+    if not os.path.exists(os.path.dirname(filename)):
+        try:
+            os.makedirs(os.path.dirname(filename))
+        except OSError as exc: # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
 #Searching Twitter
-REQUEST_DELAY = 5
+REQUEST_DELAY = 2
 for x in range(len(HashList)):
     searched_tweets = api.search(q=HashList[x])
     time.sleep(REQUEST_DELAY)
     File.write(HashList[x])
     File.write('\n')
     for searched_tweets in searched_tweets:
+        #Prints the tweets for testing, remove for final version
         print(searched_tweets.text)
         print(' ')
+        #Saves tweets into a file for each individual topic
+        CreateFile()
+        Tweets = open("C:\\Users\\Matt\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics\\%s.txt" % (TopicList[x]), 'a+', encoding='utf-8')
+        Tweets.write(searched_tweets.text)
+        Tweets.write('\n')
+        #Saves all tweets in file
         File.write(searched_tweets.text)
         File.write('\n')
     File.write('\n')
+Tweets.close()
+File.close()
