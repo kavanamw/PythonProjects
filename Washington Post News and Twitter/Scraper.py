@@ -1,5 +1,4 @@
 import requests
-import csv
 from bs4 import BeautifulSoup
 
 #Get the page and make a beautiful soup object

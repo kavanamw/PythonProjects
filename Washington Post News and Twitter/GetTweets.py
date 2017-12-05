@@ -1,12 +1,13 @@
 import tweepy
 import time
 import os
-import errno
+import re
+from textblob import TextBlob
 #Token and key setup, moving to a file would be more secure
 access_token = "2496354104-uPCkkSWZMKGoxSUQHAIQQL60TdJxuRiVCQdkERw"
 access_secret = "GItWzmaoI9deOVYlIT7iwcjhwVNYlx4zCjptmEQZwYoRN"
 consumer_key = "2Ms1qRsrxUu2nXliA0TGWRERe"
-consumer_secret = "gyeVOAUWwqy0F79HMXwUqOlFGMbwLrJcmGOLkqU9NheQeXfUz7"\
+consumer_secret = "gyeVOAUWwqy0F79HMXwUqOlFGMbwLrJcmGOLkqU9NheQeXfUz7"
 
 #Oauth and api
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
@@ -25,7 +26,7 @@ File = open('Tweets.txt', 'w', encoding='utf-8')
 
 #Adds the '#' for the twitter search
 HashList = []
-for x in range(len(TopicList)):
+for x in range(len(TopicList) - 1):
     HashList.append('#' + TopicList[x])
 print(HashList)
 
@@ -36,7 +37,7 @@ for x in range(len(HashList)):
     Htopics.write('\n')
 
 def CreateFile():
-    filename = "C:\\Users\\Matt\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics"
+    filename = "C:\\Users\\vuata\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics"
     if not os.path.exists(os.path.dirname(filename)):
         try:
             os.makedirs(os.path.dirname(filename))
@@ -47,7 +48,7 @@ def CreateFile():
 #Searching Twitter
 REQUEST_DELAY = 2
 for x in range(len(HashList)):
-    searched_tweets = api.search(q=HashList[x])
+    searched_tweets = api.search(q=HashList[x], count=1000)
     time.sleep(REQUEST_DELAY)
     File.write(HashList[x])
     File.write('\n')
@@ -55,9 +56,14 @@ for x in range(len(HashList)):
         #Prints the tweets for testing, remove for final version
         print(searched_tweets.text)
         print(' ')
+        #Cleans tweets
+        #analysis = TextBlob(self.clean_tweet(searched_tweets))
+        #searched_tweets = analysis
+        #searched_tweets = clean_tweet(searched_tweets)
         #Saves tweets into a file for each individual topic
         CreateFile()
-        Tweets = open("C:\\Users\\Matt\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics\\%s.txt" % (TopicList[x]), 'a+', encoding='utf-8')
+        Tweets = open("C:\\Users\\vuata\\Google Drive\\Git\\PythonProjects\\Washington Post News and Twitter\\Topics\\%s.txt" % (TopicList[x]), 'a+', encoding='utf-8')
+        Tweets.write('\n')
         Tweets.write(searched_tweets.text)
         Tweets.write('\n')
         #Saves all tweets in file
